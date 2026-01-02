@@ -8,7 +8,7 @@ while ($listener.IsListening) {
     $request = $context.Request
     $response = $context.Response
 
-    $path = "c:/Users/pc/Documents/Sani's innovations/myportfollio/portfolio-website" + $request.Url.LocalPath
+    $path = "C:/Users/pc/Documents/Sani's innovations/myportfollio" + $request.Url.LocalPath
     if ($path.EndsWith("/")) { $path += "index.html" }
 
     if (Test-Path $path) {

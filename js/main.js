@@ -1,3 +1,11 @@
+// Initialize AOS
+AOS.init({
+    duration: 1000,
+    easing: 'ease-out-cubic',
+    once: true,
+    offset: 50,
+});
+
 // Mobile Menu Toggle
 const btn = document.getElementById('mobile-menu-btn');
 const menu = document.getElementById('mobile-menu');
@@ -15,36 +23,52 @@ menu.querySelectorAll('a').forEach(link => {
     });
 });
 
-// Scroll Animations using Intersection Observer
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px"
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('opacity-100', 'translate-y-0');
-            entry.target.classList.remove('opacity-0', 'translate-y-10');
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-// Add animation classes to elements
-document.querySelectorAll('section > div').forEach(section => {
-    section.classList.add('transition-all', 'duration-1000', 'ease-out', 'opacity-0', 'translate-y-10');
-    observer.observe(section);
-});
-
-// Navbar scroll background effect
+// Navbar scroll background effect - Updated for new design
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.classList.add('bg-darker/90', 'shadow-lg');
-        navbar.classList.remove('glass-card');
+    if (window.scrollY > 20) {
+        navbar.classList.add('bg-dark/80', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-white/5');
+        navbar.classList.remove('border-transparent');
     } else {
-        navbar.classList.remove('bg-darker/90', 'shadow-lg');
-        navbar.classList.add('glass-card');
+        navbar.classList.remove('bg-dark/80', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-white/5');
+        navbar.classList.add('border-transparent');
     }
 });
+
+// Typewriter Effect
+const textElement = document.getElementById('typewriter');
+const roles = ['Software Developer', '.NET Specialist', 'Full Stack Dev', 'Problem Solver'];
+let roleIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let typeSpeed = 100;
+
+function type() {
+    const currentRole = roles[roleIndex];
+
+    if (isDeleting) {
+        textElement.textContent = currentRole.substring(0, charIndex - 1);
+        charIndex--;
+        typeSpeed = 50;
+    } else {
+        textElement.textContent = currentRole.substring(0, charIndex + 1);
+        charIndex++;
+        typeSpeed = 100;
+    }
+
+    if (!isDeleting && charIndex === currentRole.length) {
+        isDeleting = true;
+        typeSpeed = 2000; // Pause at end
+    } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+        typeSpeed = 500; // Pause before new word
+    }
+
+    setTimeout(type, typeSpeed);
+}
+
+// Start typewriter
+if (textElement) {
+    type();
+}
